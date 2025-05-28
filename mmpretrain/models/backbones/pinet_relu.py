@@ -416,7 +416,7 @@ class ResLayer(nn.Sequential):
 
 
 @BACKBONES.register_module()
-class ResNet(BaseBackbone):
+class PiResNet(BaseBackbone):
     """ResNet backbone.
 
     Please refer to the `paper <https://arxiv.org/abs/1512.03385>`__ for
@@ -469,7 +469,8 @@ class ResNet(BaseBackbone):
     """
 
     arch_settings = {
-        18: (BasicBlock, (2, 2, 2, 2)),
+        # 18: (BasicBlock, (2, 2, 2, 2)),
+        "18pi": (BasicBlock, (2, 2, 1, 1)),
         34: (BasicBlock, (3, 4, 6, 3)),
         50: (Bottleneck, (3, 4, 6, 3)),
         101: (Bottleneck, (3, 4, 23, 3)),
