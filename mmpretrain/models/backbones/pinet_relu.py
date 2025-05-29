@@ -1,12 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-from mmcv.cnn import (ConvModule, build_activation_layer, build_conv_layer,
-                      build_norm_layer, constant_init)
+from mmcv.cnn import (
+    ConvModule,
+    build_activation_layer,
+    build_conv_layer,
+    build_norm_layer,
+)
 from mmcv.cnn.bricks import DropPath
-from mmcv.runner import BaseModule
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.model import BaseModule
+from mmengine.model.weight_init import constant_init
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 from ..builder import BACKBONES
 from .base_backbone import BaseBackbone
@@ -504,7 +508,7 @@ class PiResNet(BaseBackbone):
                          layer=['_BatchNorm', 'GroupNorm'])
                  ],
                  drop_path_rate=0.0):
-        super(ResNet, self).__init__(init_cfg)
+        super(PiResNet, self).__init__(init_cfg)
         if depth not in self.arch_settings:
             raise KeyError(f'invalid depth {depth} for resnet')
         self.depth = depth
@@ -633,7 +637,7 @@ class PiResNet(BaseBackbone):
                 param.requires_grad = False
 
     def init_weights(self):
-        super(ResNet, self).init_weights()
+        super(PiResNet, self).init_weights()
 
         if (isinstance(self.init_cfg, dict)
                 and self.init_cfg['type'] == 'Pretrained'):
@@ -664,7 +668,7 @@ class PiResNet(BaseBackbone):
         return tuple(outs)
 
     def train(self, mode=True):
-        super(ResNet, self).train(mode)
+        super(PiResNet, self).train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
@@ -674,7 +678,7 @@ class PiResNet(BaseBackbone):
 
 
 @BACKBONES.register_module()
-class ResNetV1c(ResNet):
+class PiResNetV1c(PiResNet):
     """ResNetV1c backbone.
 
     This variant is described in `Bag of Tricks.
@@ -685,12 +689,12 @@ class ResNetV1c(ResNet):
     """
 
     def __init__(self, **kwargs):
-        super(ResNetV1c, self).__init__(
+        super(PiResNetV1c, self).__init__(
             deep_stem=True, avg_down=False, **kwargs)
 
 
 @BACKBONES.register_module()
-class ResNetV1d(ResNet):
+class PiResNetV1d(PiResNet):
     """ResNetV1d backbone.
 
     This variant is described in `Bag of Tricks.
@@ -702,5 +706,5 @@ class ResNetV1d(ResNet):
     """
 
     def __init__(self, **kwargs):
-        super(ResNetV1d, self).__init__(
+        super(PiResNetV1d, self).__init__(
             deep_stem=True, avg_down=True, **kwargs)

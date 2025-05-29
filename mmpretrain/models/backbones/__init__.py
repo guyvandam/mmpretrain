@@ -26,7 +26,6 @@ from .mobilenet_v3 import MobileNetV3
 from .mobileone import MobileOne
 from .mobilevit import MobileViT
 from .mvit import MViT
-from .pinet_relu import PiResNet
 from .poolformer import PoolFormer
 from .regnet import RegNet
 from .replknet import RepLKNet
@@ -59,6 +58,8 @@ from .vision_transformer import VisionTransformer
 from .vit_eva02 import ViTEVA02
 from .vit_sam import ViTSAM
 from .xcit import XCiT
+from .pinet_relu import PiResNet, PiResNetV1c, PiResNetV1d
+from .pinet_resnet_cifar import PiResNet_CIFAR
 
 __all__ = [
     "LeNet5",
@@ -128,4 +129,7 @@ __all__ = [
     "SparseResNet",
     "SparseConvNeXt",
     "PiResNet",
+    "PiResNetV1c",
+    "PiResNetV1d",
+    "PiResNet_CIFAR"
 ]
